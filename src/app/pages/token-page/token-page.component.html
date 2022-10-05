@@ -1,0 +1,8 @@
+<app-header></app-header>
+<ng-container *ngIf="token">
+  <div class="row">
+    <h5>{{ token.name }}</h5>
+    <a href="{{ organizationUrl }}" target="_blank">{{ organizationUrl }}</a>
+    <pre>{{ schema }}</pre>
+  </div>
+</ng-container>
