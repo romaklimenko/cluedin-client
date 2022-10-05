@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -7,6 +8,14 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'cluedin';
+
+  constructor(public router: Router) {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        window.scroll(0, 0);
+      }
+    });
+  }
 
   onKey(event: KeyboardEvent) {
     console.log(event);
@@ -23,7 +32,7 @@ export class AppComponent {
 
     switch (event.code) {
       case 'KeyH': // Home
-        // TODO:
+        this.router.navigateByUrl('/');
         break;
       default:
         break;
