@@ -1,7 +1,9 @@
-<h4>Tokens</h4>
-<ul>
-  <li *ngFor="let token of tokens">
-    <a routerLink="tokens/{{slug(token)}}">{{ token.name }}</a>
-  </li>
-</ul>
-<a class="btn btn-primary" routerLink="tokens/new">Add a token</a>
+<div (document:keydown)="onKey($event)">
+  <h4>Tokens</h4>
+  <ol>
+    <li *ngFor="let token of tokens">
+      <a routerLink="tokens/{{slug(token)}}">{{ token.name }}</a>
+    </li>
+  </ol>
+  <a class="btn btn-primary" routerLink="tokens/new">Add a token</a>
+</div>
