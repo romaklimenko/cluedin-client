@@ -5,12 +5,30 @@ import { NewTokenPageComponent } from './pages/new-token-page/new-token-page.com
 import { TokenPageComponent } from './pages/token-page/token-page.component';
 import { TokensPageComponent } from './pages/tokens-page/tokens-page.component';
 
+const title = 'CluedIn Sidecar';
+
 const routes: Routes = [
 
-  { path: '', component: HomePageComponent },
-  { path: 'tokens', component: TokensPageComponent },
-  { path: 'tokens/new', component: NewTokenPageComponent },
-  { path: 'tokens/:slug-jti', component: TokenPageComponent }
+  {
+    path: '',
+    component: HomePageComponent,
+    title: title
+  },
+  {
+    path: 'tokens',
+    component: TokensPageComponent,
+    title: `${title} - Tokens`
+  },
+  {
+    path: 'tokens/new', 
+    component: NewTokenPageComponent,
+    title: `${title} - New Token`
+  },
+  {
+    path: 'tokens/:slug-jti',
+    component: TokenPageComponent,
+    title: `${title} - Token`
+  }
 ];
 
 @NgModule({
