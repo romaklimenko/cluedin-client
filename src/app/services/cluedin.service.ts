@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { getOrganizationUrl } from '../models/jtw';
+import { getApiUrl } from '../models/jtw';
 import { Token } from '../models/token';
 
 @Injectable({
@@ -47,12 +47,9 @@ export class CluedInService {
   }
 
   public getEntitySchema(token: Token) {
-    const organizationUrl = getOrganizationUrl(token);
-    const apiUrl = `${organizationUrl}api/api/`;
-
     return this.fetchJson(
       'Get all Vocabulary Keys',
-      `${apiUrl}v1/entity/schema/`,
+      `${getApiUrl(token)}v1/entity/schema/`,
       {
         method: 'GET',
         headers: {

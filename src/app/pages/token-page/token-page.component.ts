@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { getOrganizationUrl } from 'src/app/models/jtw';
-import { Token } from 'src/app/models/token';
+import { getTokenSlug, Token } from 'src/app/models/token';
 import { CluedInService } from 'src/app/services/cluedin.service';
 import { TokensService } from 'src/app/services/tokens.service';
 
@@ -13,6 +13,7 @@ import { TokensService } from 'src/app/services/tokens.service';
 export class TokenPageComponent implements OnInit {
 
   public token: Token | null = null;
+  public tokenSlug: string | null = null;
   public organizationUrl: string = '#';
   public schema: string = '';
 
@@ -26,6 +27,7 @@ export class TokenPageComponent implements OnInit {
       for (let token of this.tokenService.getTokens()) { // TODO: tokenService.getTokens(x => x..JWT?.jti === jti)
         if (token.JWT?.jti === jti) {
           this.token = token;
+          this.tokenSlug = getTokenSlug(token);
           this.organizationUrl = getOrganizationUrl(token);
           this.cluedInService.getEntitySchema(this.token).then(result => this.schema = result);
         }

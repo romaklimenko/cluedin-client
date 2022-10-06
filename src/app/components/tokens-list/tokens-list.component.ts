@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Token } from 'src/app/models/token';
+import { getTokenSlug, Token } from 'src/app/models/token';
 import { TokensService } from 'src/app/services/tokens.service';
 
 @Component({
@@ -19,11 +19,6 @@ export class TokensListComponent implements OnInit {
   }
 
   slug(token: Token): string {
-    return token.name
-      .toLowerCase()
-      .trim()
-      .replace(/[^\w\s-]/g, '')
-      .replace(/[\s_-]+/g, '-')
-      .replace(/^-+|-+$/g, '') + '-' + token.JWT?.jti;
+    return getTokenSlug(token);
   }
 }

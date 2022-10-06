@@ -17,14 +17,22 @@ export class TokensService {
 
   public addToken(token: Token): void {
     if (this.getTokens().filter(x => x.accessToken === token.accessToken)) {
-      localStorage.setItem(`token-${token.JWT?.jti}`, JSON.stringify(token));
+      localStorage.setItem(this.getTokenKey(token), JSON.stringify(token));
     } else {
       throw new Error('The token already exists.')
     }
   }
 
-  public removeToken(token: Token): void {
-    //
+  public updateToken(token: Token): void {
+    localStorage.setItem(this.getTokenKey(token), JSON.stringify(token));
+  }
+
+  public deleteToken(token: Token): void {
+    localStorage.removeItem(this.getTokenKey(token));
+  }
+
+  private getTokenKey(token: Token): string {
+    return `token-${token.JWT!.jti}`;
   }
 
 }

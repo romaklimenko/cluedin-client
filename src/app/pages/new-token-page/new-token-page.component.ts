@@ -69,7 +69,7 @@ export class NewTokenPageComponent implements OnInit {
         new Token(
           this.newTokenForm.value.name,
           this.newTokenForm.value.token));
-      this.router.navigateByUrl('tokens');
+      this.router.navigateByUrl('/');
     }
   }
 

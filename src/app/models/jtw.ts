@@ -11,10 +11,20 @@ export function parseJwt(rawJwt: string): JWT | null {
 }
 
 export function getOrganizationUrl(token: Token) {
+  if (token.organizationUrl) {
+    return token.organizationUrl;
+  }
   const url = new URL(token.JWT!.iss!);
   const hostnameParts = url.hostname.split('.');
   hostnameParts[0] = token.JWT!.ClientId!;
   return `${url.protocol}//${hostnameParts.join('.')}/`;
+}
+
+export function getApiUrl(token: Token) {
+  if (token.apiUrl) {
+    return token.apiUrl;
+  }
+  return `${getOrganizationUrl(token)}api/api/`;
 }
 
 export interface JWT {

@@ -1,8 +1,16 @@
 <app-header></app-header>
 <ng-container *ngIf="token">
   <div class="row">
-    <h5>{{ token.name }}</h5>
-    <a href="{{ organizationUrl }}" target="_blank">{{ organizationUrl }}</a>
-    <pre>{{ schema }}</pre>
+    <div class="col-md-8">
+      <h4>
+        {{ token.name }}
+        <small>
+          <a href="{{ organizationUrl }}" target="_blank">{{ organizationUrl }}</a>
+        </small>
+      </h4>
+      <a class="btn btn-primary btn-sm" routerLink="/tokens/{{tokenSlug}}/settings">Settings</a>
+      <br />
+      <pre>{{ schema }}</pre>
+    </div>
   </div>
 </ng-container>
