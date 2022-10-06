@@ -29,7 +29,7 @@ export class TokenPageComponent implements OnInit {
           this.token = token;
           this.tokenSlug = getTokenSlug(token);
           this.organizationUrl = getOrganizationUrl(token);
-          this.cluedInService.getEntitySchema(this.token).then(result => this.schema = result);
+          this.cluedInService.getEntitySchema(this.token).then(result => this.schema = JSON.stringify(result, null, 2));
         }
       }
     });
