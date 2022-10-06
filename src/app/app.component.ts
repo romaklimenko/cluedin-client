@@ -18,7 +18,7 @@ export class AppComponent {
   }
 
   onKey(event: KeyboardEvent) {
-    console.log(event);
+    // console.log(event);
 
     const element = event.target as HTMLElement;
 
