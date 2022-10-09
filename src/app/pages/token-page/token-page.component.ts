@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { getOrganizationUrl } from 'src/app/models/jtw';
 import { getTokenSlug, Token } from 'src/app/models/token';
 import { CluedInService } from 'src/app/services/cluedin.service';
@@ -17,9 +17,11 @@ export class TokenPageComponent implements OnInit {
   public organizationUrl: string = '#';
   public schema: string = '';
 
-  constructor(private route: ActivatedRoute, public tokenService: TokensService, public cluedInService: CluedInService) {
-
-  }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private tokenService: TokensService,
+    private cluedInService: CluedInService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -33,6 +35,28 @@ export class TokenPageComponent implements OnInit {
         }
       }
     });
+  }
+
+  onKey(event: KeyboardEvent) {
+    // console.log(event);
+
+    const element = event.target as HTMLElement;
+
+    if (element.tagName.toUpperCase() === 'INPUT') {
+      const input = (element as HTMLInputElement);
+      const type = input.type.toUpperCase();
+      if (type === 'TEXT' || type === 'PASSWORD') {
+        return;
+      }
+    }
+
+    switch (event.code) {
+      case 'KeyE': // Edit
+        this.router.navigateByUrl(`/tokens/${this.tokenSlug}/settings`);
+        break;
+      default:
+        break;
+    }
   }
 
 }

@@ -34,6 +34,9 @@ export class AppComponent {
       case 'KeyH': // Home
         this.router.navigateByUrl('/');
         break;
+      case 'KeyN': // New Token
+        this.router.navigateByUrl('/tokens/new');
+        break;
       default:
         break;
     }
