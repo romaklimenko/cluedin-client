@@ -31,7 +31,6 @@ export class TokenPageComponent implements OnInit {
           this.token = token;
           this.tokenSlug = getTokenSlug(token);
           this.organizationUrl = getOrganizationUrl(token);
-          this.cluedInService.getEntitySchema(this.token).then(result => this.schema = JSON.stringify(result, null, 2));
         }
       }
     });
@@ -53,6 +52,9 @@ export class TokenPageComponent implements OnInit {
     switch (event.code) {
       case 'KeyE': // Edit
         this.router.navigateByUrl(`/tokens/${this.tokenSlug}/settings`);
+        break;
+      case 'KeyV': // Vocabularies
+        this.router.navigateByUrl(`/tokens/${this.tokenSlug}/vocabularies`);
         break;
       default:
         break;

@@ -46,7 +46,7 @@ export class CluedInService {
     return json;
   }
 
-  public getEntitySchema(token: Token) {
+  public getEntitySchema(token: Token): Promise<VocabularyKeyResponse[]> {
     return this.fetchJson(
       'Get all Vocabulary Keys',
       `${getApiUrl(token)}v1/entity/schema/`,
@@ -57,4 +57,21 @@ export class CluedInService {
         }
       });
   }
+}
+
+export interface VocabularyKeyResponse {
+  Key: string;
+  VocabularyName: string;
+  DisplayName: string;
+  ShowInApplication: boolean;
+  Visibility: string;
+  DataType: string;
+  Grouping: string;
+  VocabularySource: string;
+  Editable: boolean;
+  Removable: boolean;
+  PersonallyIdentifying: boolean;
+  UsedInProcessing: boolean;
+  IsCore: boolean;
+  MapsToOtherKey: string;
 }

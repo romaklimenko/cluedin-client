@@ -1,0 +1,26 @@
+<ng-container>
+  <app-header></app-header>
+  <div class="row" *ngIf="token">
+    <div class="col-md-12">
+      <h4>
+        {{ token.name }}
+        <small>
+          <a href="{{ organizationUrl }}" target="_blank">{{ organizationUrl }}</a>
+        </small>
+      </h4>
+      <h5>Vocabularies</h5>
+      <p>
+        <svg style="position:relative;top:1px;" width=14 height=14 viewBox="-10 -10 20 20">
+          <circle r=9 fill="#1DE9B6"></circle>
+        </svg> - Core Vocabulary Keys,
+        <svg style="position:relative;top:1px;" width=14 height=14 viewBox="-10 -10 20 20">
+          <circle r=9 fill="#FFD600"></circle>
+        </svg> - Vocabulary Keys, that are not mapped to any of the Core Vocabulary Keys.
+      </p>
+      <svg class="chart" #svgElement></svg>
+    </div>
+  </div>
+  <div class="row">
+    <div #widthStandard class="col-md-12"></div>
+  </div>
+</ng-container>

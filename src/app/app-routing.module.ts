@@ -4,6 +4,7 @@ import { HomePageComponent } from './pages/home-page/home-page.component';
 import { NewTokenPageComponent } from './pages/new-token-page/new-token-page.component';
 import { TokenPageComponent } from './pages/token-page/token-page.component';
 import { TokenSettingsPageComponent } from './pages/token-settings-page/token-settings-page.component';
+import { VocabulariesPageComponent } from './pages/vocabularies-page/vocabularies-page.component';
 
 const title = 'CluedIn Sidecar';
 
@@ -23,6 +24,11 @@ const routes: Routes = [
     path: 'tokens/:slug-jti/settings',
     component: TokenSettingsPageComponent,
     title: `${title} - Token Settings`
+  },
+  {
+    path: 'tokens/:slug-jti/vocabularies',
+    component: VocabulariesPageComponent,
+    title: `${title} - Vocabularies`
   },
   {
     path: 'tokens/:slug-jti',

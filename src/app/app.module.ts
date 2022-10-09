@@ -10,6 +10,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { TokensListComponent } from './components/tokens-list/tokens-list.component';
 import { NewTokenPageComponent } from './pages/new-token-page/new-token-page.component';
 import { TokenSettingsPageComponent } from './pages/token-settings-page/token-settings-page.component';
+import { VocabulariesPageComponent } from './pages/vocabularies-page/vocabularies-page.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { TokenSettingsPageComponent } from './pages/token-settings-page/token-se
     HeaderComponent,
     TokensListComponent,
     NewTokenPageComponent,
-    TokenSettingsPageComponent
+    TokenSettingsPageComponent,
+    VocabulariesPageComponent
   ],
   imports: [
     BrowserModule,
