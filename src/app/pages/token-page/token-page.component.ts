@@ -53,6 +53,9 @@ export class TokenPageComponent implements OnInit {
       case 'KeyE': // Edit
         this.router.navigateByUrl(`/tokens/${this.tokenSlug}/settings`);
         break;
+      case 'KeyS': // Search
+        this.router.navigateByUrl(`/tokens/${this.tokenSlug}/search`);
+        break;
       case 'KeyV': // Vocabularies
         this.router.navigateByUrl(`/tokens/${this.tokenSlug}/vocabularies`);
         break;

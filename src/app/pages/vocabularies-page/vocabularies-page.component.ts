@@ -15,7 +15,7 @@ export class VocabulariesPageComponent implements OnInit, AfterViewInit {
 
   public token: Token | null = null;
   public tokenSlug: string | null = null;
-  public organizationUrl: string = '#';
+  public organizationUrl: string = '';
 
   @ViewChild('svgElement') svgElement!: ElementRef;
   @ViewChild('widthStandard') widthStandard!: ElementRef;

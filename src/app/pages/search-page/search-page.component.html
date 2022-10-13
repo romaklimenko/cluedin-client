@@ -1,0 +1,22 @@
+<app-header></app-header>
+<div class="row">
+  <div class="col-md-8">
+    <form [formGroup]="searchForm" (ngSubmit)="submit()">
+      <div class="mb-3">
+        <label for="token">Search</label>
+        <input type="text" id="search" formControlName="search" class="form-control" autocomplete="off" autofocus>
+      </div>
+      <button type="submit" [disabled]="!searchForm.valid" class="btn btn-primary mb-3">Search</button>
+  </form>
+  </div>
+</div>
+<div class="row" *ngIf="searchResponse">
+  <div class="col-md-8">
+    <ul class="list-unstyled">
+      <li *ngFor="let entry of searchResponse.data.search.entries">
+        <span class="badge text-bg-primary">{{ entry.entityType }}</span>&nbsp;
+        <a routerLink="../entity/{{entry.id}}">{{ entry.name ?? 'null' }}</a>
+      </li>
+    </ul>
+  </div>
+</div>

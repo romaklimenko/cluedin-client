@@ -57,6 +57,49 @@ export class CluedInService {
         }
       });
   }
+
+  public search(token: Token, query: string): Promise<SearchResponse> {
+    query = query === '' ? '*' : query;
+
+    const gql =
+    `{
+      search (query:"${query}" pageSize: 100 )
+      {
+        entries
+        {
+          id
+          name
+          entityType
+        }
+      }
+    }`;
+
+    return this.fetchJson(
+      `Search '${query}'`,
+      `${getApiUrl(token)}graphql`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token.accessToken}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ query: gql })
+      });
+  }
+}
+
+export interface SearchResponse {
+  data: {
+    search: {
+      entries: [
+        {
+          id: string,
+          name?: string,
+          entityType: string
+        }
+      ]
+    }
+  }
 }
 
 export interface VocabularyKeyResponse {
