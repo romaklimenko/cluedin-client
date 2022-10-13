@@ -43,7 +43,7 @@ export class TokensListComponent implements OnInit {
     const index = parseInt(event.key);
 
     if (!isNaN(index) && index < this.tokens.length + 1 && index > 0) {
-      this.router.navigateByUrl(`tokens/${getTokenSlug(this.tokens[index - 1])}`);
+      this.router.navigateByUrl(`/tokens/${getTokenSlug(this.tokens[index - 1])}`);
     }
   }
 }

@@ -43,19 +43,10 @@ export class VocabulariesPageComponent implements OnInit, AfterViewInit {
   }
 
   async render() {
-
-    // sizing
     const element = this.svgElement.nativeElement;
     const width = this.widthStandard.nativeElement.clientWidth - 25;
 
-    // const height = Math.max(400, width / 16 * 7);
-
     const vocabularyKeys = await this.cluedInService.getEntitySchema(this.token!);
-
-    console.log(vocabularyKeys);
-
-
-    // observable
 
     const mappingPath = (map: Map<string, VocabularyKeyResponse>, key: string, path: string[] = []): string[] => {
       const mapsToOtherKey: string | undefined = map?.get(key)?.MapsToOtherKey;
@@ -201,5 +192,4 @@ export class VocabulariesPageComponent implements OnInit, AfterViewInit {
         return d3.select(this).attr('text-anchor') === 'start' ? 6 : -6;
       });
   }
-
 }

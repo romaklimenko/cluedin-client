@@ -55,7 +55,7 @@ export class TokenSettingsPageComponent implements OnInit {
         this.token.organizationUrl = this.tokenSettingsForm.value.organizationUrl;
         this.token.apiUrl = this.tokenSettingsForm.value.apiUrl;
         this.tokenService.updateToken(this.token);
-        this.router.navigateByUrl(`tokens/${getTokenSlug(this.token)}`);
+        this.router.navigateByUrl(`/tokens/${getTokenSlug(this.token)}`);
       }
   }
 
@@ -69,7 +69,7 @@ export class TokenSettingsPageComponent implements OnInit {
       
       this.tokenService.updateToken(this.token);
       
-      this.router.navigateByUrl(`tokens/${getTokenSlug(this.token)}`);
+      this.router.navigateByUrl(`/tokens/${getTokenSlug(this.token)}`);
     }
   }
 

@@ -32,7 +32,12 @@ export class AppComponent {
 
     switch (event.code) {
       case 'KeyH': // Home
-        this.router.navigateByUrl('/');
+        const pathnameParts = window.location.pathname.split('/');
+        if (pathnameParts.length > 3 && pathnameParts[1] === 'tokens') {
+          this.router.navigateByUrl(`/tokens/${pathnameParts[2]}`);
+        } else {
+          this.router.navigateByUrl('/');
+        }
         break;
       case 'KeyN': // New Token
         this.router.navigateByUrl('/tokens/new');
