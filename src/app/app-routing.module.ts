@@ -6,6 +6,7 @@ import { SearchPageComponent } from './pages/search-page/search-page.component';
 import { TokenPageComponent } from './pages/token-page/token-page.component';
 import { SettingsPageComponent } from './pages/settings-page/settings-page.component';
 import { VocabulariesPageComponent } from './pages/vocabularies-page/vocabularies-page.component';
+import { EntityPageComponent } from './pages/entity-page/entity-page.component';
 
 const title = 'CluedIn Sidecar';
 
@@ -20,6 +21,11 @@ const routes: Routes = [
     path: 'tokens/new', 
     component: NewTokenPageComponent,
     title: `${title} - New Token`
+  },
+  {
+    path: 'tokens/:slug-jti/entity/:id',
+    component: EntityPageComponent,
+    title: `${title} - Entity`
   },
   {
     path: 'tokens/:slug-jti/search',

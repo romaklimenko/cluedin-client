@@ -46,6 +46,18 @@ export class CluedInService {
     return json;
   }
 
+  public getEntity(token: Token, id: string): Promise<EntityResponse> {
+    return this.fetchJson(
+      `Get Entity (id:${id})`,
+      `${getApiUrl(token)}entity?id=${id}&full=true`,
+      {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token.accessToken}`
+        }
+      });
+  }
+
   public getEntitySchema(token: Token): Promise<VocabularyKeyResponse[]> {
     return this.fetchJson(
       'Get all Vocabulary Keys',
@@ -85,6 +97,31 @@ export class CluedInService {
         },
         body: JSON.stringify({ query: gql })
       });
+  }
+}
+
+export interface EntityResponse {
+  entity: {
+    'attribute-id': string;
+    processedData: { // TODO: move to a separate interface
+      entityType: string;
+      name: string;
+      codes: string[];
+      edgesSummary: {
+        incoming: {
+          'attribute-edgeType': string;
+          'attribute-count': string;
+          'attribute-entityType': string;
+        }[];
+        outgoing: {
+          'attribute-edgeType': string;
+          'attribute-count': string;
+          'attribute-entityType': string;
+        }[];
+      };
+      properties: { [vocabularyKey: string]: string };
+      'attribute-origin': string;
+    }
   }
 }
 
