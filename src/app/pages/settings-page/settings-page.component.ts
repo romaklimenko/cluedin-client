@@ -7,11 +7,11 @@ import { CluedInService } from 'src/app/services/cluedin.service';
 import { TokensService } from 'src/app/services/tokens.service';
 
 @Component({
-  selector: 'app-token-settings-page',
-  templateUrl: './token-settings-page.component.html',
-  styleUrls: ['./token-settings-page.component.css']
+  selector: 'app-settings-page',
+  templateUrl: './settings-page.component.html',
+  styleUrls: ['./settings-page.component.css']
 })
-export class TokenSettingsPageComponent implements OnInit {
+export class SettingsPageComponent implements OnInit {
 
   public token: Token | null = null;
 
@@ -26,7 +26,6 @@ export class TokenSettingsPageComponent implements OnInit {
   get apiUrl() { return this.tokenSettingsForm.get('apiUrl'); }
 
   constructor(
-    private cluedInService: CluedInService,
     private route: ActivatedRoute,
     private router: Router,
     private tokenService: TokensService) {}
