@@ -2,3 +2,7 @@
 a {
   text-decoration: none;
 }
+
+.nav-link {
+  cursor: pointer;
+}

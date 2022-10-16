@@ -1,29 +1,50 @@
 <app-header></app-header>
 <div *ngIf="entity && token" class="row">
   <div class="col-md-12">
-    <h4>{{ entity.entity.processedData.name }}</h4>
-    <div>Entity Id: <a href="{{token.organizationUrl}}entity/{{entity.entity['attribute-id']}}" target="_blank">
-      {{ entity.entity['attribute-id'] }}</a></div>
-    <div>Entity Type: <code>{{ entity.entity.processedData.entityType }}</code></div> <!-- TODO: make a link to search -->
-    <div>Origin Entity Code: <code>{{ entity.entity.processedData['attribute-origin'] }}</code></div>
-    <div>Codes:</div>
-    <ul>
-      <li *ngFor="let code of entity.entity.processedData.codes"><code>{{code}}</code></li>
-    </ul>
-    <div>Properties:</div>
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">Vocabulary Key</th>
-          <th scope="col">Value</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let property of properties">
-          <th scope="row">{{ property.vocabularyKey }}</th>
-          <td>{{ property.value }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <h5>{{ entity.entity.processedData.entityType }} <a href="{{token.organizationUrl}}entity/{{entity.entity['attribute-id']}}" target="_blank">
+      {{entity.entity.processedData.name }}
+    </a></h5>
+    <div>Id: <span class="font-monospace">{{ entity.entity['attribute-id'] }}</span></div>
+    <div>Origin Code: <span class="font-monospace">{{ entity.entity.processedData['attribute-origin'] }}</span></div>
+    <br>
+    <div class="col-md-12">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link" [ngClass]="currentTab === 'properties' ? 'active' : ''"
+            (click)="selectTab('properties')">Properties</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [ngClass]="currentTab === 'relations' ? 'active' : ''"
+            (click)="selectTab('relations')">Relations</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [ngClass]="currentTab === 'graph' ? 'active' : ''" (click)="selectTab('graph')">Graph</a>
+        </li>
+      </ul>
+      <br />
+    </div>
+  </div>
+  <div *ngIf="entity && token" [hidden]="currentTab !== 'properties'" class="row">
+    <div class="col-md-12">
+      <div>Codes:</div>
+      <ul>
+        <li *ngFor="let code of entity.entity.processedData.codes"><span class="font-monospace">{{code}}</span></li>
+      </ul>
+      <div>Properties:</div>
+      <table class="table table-hover table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">Vocabulary Key</th>
+            <th scope="col">Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let property of properties">
+            <th scope="row">{{ property.vocabularyKey }}</th>
+            <td>{{ property.value }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
