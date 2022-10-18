@@ -4,7 +4,7 @@ import { Token } from '../models/token';
 @Injectable({
   providedIn: 'root'
 })
-export class TokensService {
+export class TokenService {
 
   constructor() { }
 
@@ -33,6 +33,15 @@ export class TokensService {
 
   private getTokenKey(token: Token): string {
     return `token-${token.JWT!.jti}`;
+  }
+
+  public getTokenSlug(token: Token) {
+    return token.name
+      .toLowerCase()
+      .trim()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/[\s_-]+/g, '-')
+      .replace(/^-+|-+$/g, '') + '-' + token.JWT?.jti;
   }
 
 }

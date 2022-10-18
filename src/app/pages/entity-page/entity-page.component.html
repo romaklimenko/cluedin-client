@@ -1,9 +1,9 @@
 <app-header></app-header>
 <div *ngIf="entity && token" class="row">
   <div class="col-md-12">
-    <h5>{{ entity.entity.processedData.entityType }} <a href="{{token.organizationUrl}}entity/{{entity.entity['attribute-id']}}" target="_blank">
+    <h5><a href="{{token.organizationUrl}}entity/{{entity.entity['attribute-id']}}" target="_blank">
       {{entity.entity.processedData.name }}
-    </a></h5>
+    </a><sup>{{ entity.entity.processedData.entityType }}</sup></h5>
     <div>Id: <span class="font-monospace">{{ entity.entity['attribute-id'] }}</span></div>
     <div>Origin Code: <span class="font-monospace">{{ entity.entity.processedData['attribute-origin'] }}</span></div>
     <br>
@@ -24,7 +24,7 @@
       <br />
     </div>
   </div>
-  <div *ngIf="entity && token" [hidden]="currentTab !== 'properties'" class="row">
+  <div *ngIf="entity && token && currentTab === 'properties'" class="row">
     <div class="col-md-12">
       <div>Codes:</div>
       <ul>
@@ -45,6 +45,11 @@
           </tr>
         </tbody>
       </table>
+    </div>
+  </div>
+  <div *ngIf="entity && token && currentTab === 'relations'" class="row">
+    <div class="col-md-12">
+      <app-entity-relations [id]="entity.entity['attribute-id']" [token]="token"></app-entity-relations>
     </div>
   </div>
 </div>

@@ -13,6 +13,7 @@ import { SettingsPageComponent } from './pages/settings-page/settings-page.compo
 import { VocabulariesPageComponent } from './pages/vocabularies-page/vocabularies-page.component';
 import { SearchPageComponent } from './pages/search-page/search-page.component';
 import { EntityPageComponent } from './pages/entity-page/entity-page.component';
+import { EntityRelationsComponent } from './components/entity-relations/entity-relations.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { EntityPageComponent } from './pages/entity-page/entity-page.component';
     SettingsPageComponent,
     VocabulariesPageComponent,
     SearchPageComponent,
-    EntityPageComponent
+    EntityPageComponent,
+    EntityRelationsComponent
   ],
   imports: [
     BrowserModule,

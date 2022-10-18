@@ -13,12 +13,3 @@ export class Token {
   
   public apiUrl: string | null = null;
 }
-
-export function getTokenSlug(token: Token): string {
-  return token.name
-    .toLowerCase()
-    .trim()
-    .replace(/[^\w\s-]/g, '')
-    .replace(/[\s_-]+/g, '-')
-    .replace(/^-+|-+$/g, '') + '-' + token.JWT?.jti;
-}

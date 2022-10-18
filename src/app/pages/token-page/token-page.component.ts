@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { getOrganizationUrl } from 'src/app/models/jtw';
-import { getTokenSlug, Token } from 'src/app/models/token';
-import { CluedInService } from 'src/app/services/cluedin.service';
-import { TokensService } from 'src/app/services/tokens.service';
+import { Token } from 'src/app/models/token';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-token-page',
@@ -20,8 +19,7 @@ export class TokenPageComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private tokenService: TokensService,
-    private cluedInService: CluedInService) { }
+    private tokenService: TokenService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -29,7 +27,7 @@ export class TokenPageComponent implements OnInit {
       for (let token of this.tokenService.getTokens()) { // TODO: tokenService.getTokens(x => x..JWT?.jti === jti)
         if (token.JWT?.jti === jti) {
           this.token = token;
-          this.tokenSlug = getTokenSlug(token);
+          this.tokenSlug = this.tokenService.getTokenSlug(token);
           this.organizationUrl = getOrganizationUrl(token);
         }
       }

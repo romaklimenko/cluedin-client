@@ -1,9 +1,9 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { getOrganizationUrl } from 'src/app/models/jtw';
-import { getTokenSlug, Token } from 'src/app/models/token';
+import { Token } from 'src/app/models/token';
 import { CluedInService, VocabularyKeyResponse } from 'src/app/services/cluedin.service';
-import { TokensService } from 'src/app/services/tokens.service';
+import { TokenService } from 'src/app/services/token.service';
 import * as d3 from 'd3';
 
 @Component({
@@ -22,7 +22,7 @@ export class VocabulariesPageComponent implements OnInit, AfterViewInit {
 
   constructor(
     private route: ActivatedRoute,
-    private tokenService: TokensService,
+    private tokenService: TokenService,
     private cluedInService: CluedInService) { }
 
   ngOnInit(): void {
@@ -31,7 +31,7 @@ export class VocabulariesPageComponent implements OnInit, AfterViewInit {
       for (let token of this.tokenService.getTokens()) { // TODO: tokenService.getTokens(x => x..JWT?.jti === jti)
         if (token.JWT?.jti === jti) {
           this.token = token;
-          this.tokenSlug = getTokenSlug(token);
+          this.tokenSlug = this.tokenService.getTokenSlug(token);
           this.organizationUrl = getOrganizationUrl(token);
         }
       }

@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { getApiUrl, getOrganizationUrl } from 'src/app/models/jtw';
-import { getTokenSlug, Token } from 'src/app/models/token';
-import { CluedInService } from 'src/app/services/cluedin.service';
-import { TokensService } from 'src/app/services/tokens.service';
+import { Token } from 'src/app/models/token';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-settings-page',
@@ -28,7 +27,7 @@ export class SettingsPageComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private tokenService: TokensService) {}
+    private tokenService: TokenService) {}
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -54,7 +53,7 @@ export class SettingsPageComponent implements OnInit {
         this.token.organizationUrl = this.tokenSettingsForm.value.organizationUrl;
         this.token.apiUrl = this.tokenSettingsForm.value.apiUrl;
         this.tokenService.updateToken(this.token);
-        this.router.navigateByUrl(`/tokens/${getTokenSlug(this.token)}`);
+        this.router.navigateByUrl(`/tokens/${this.tokenService.getTokenSlug(this.token)}`);
       }
   }
 
@@ -68,7 +67,7 @@ export class SettingsPageComponent implements OnInit {
       
       this.tokenService.updateToken(this.token);
       
-      this.router.navigateByUrl(`/tokens/${getTokenSlug(this.token)}`);
+      this.router.navigateByUrl(`/tokens/${this.tokenService.getTokenSlug(this.token)}`);
     }
   }
 

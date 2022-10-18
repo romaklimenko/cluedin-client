@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { getTokenSlug, Token } from 'src/app/models/token';
-import { TokensService } from 'src/app/services/tokens.service';
+import { Token } from 'src/app/models/token';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-tokens-list',
@@ -10,8 +10,10 @@ import { TokensService } from 'src/app/services/tokens.service';
 })
 export class TokensListComponent implements OnInit {
 
-  constructor(public router: Router, tokensService: TokensService) {
-    this.tokens = tokensService.getTokens().sort((a, b) => a.name > b.name ? 1 : -1);
+  constructor(
+    public router: Router,
+    public tokenService: TokenService) {
+    this.tokens = tokenService.getTokens().sort((a, b) => a.name > b.name ? 1 : -1);
   }
 
   tokens: Token[] = [];
@@ -20,7 +22,7 @@ export class TokensListComponent implements OnInit {
   }
 
   slug(token: Token): string {
-    return getTokenSlug(token);
+    return this.tokenService.getTokenSlug(token);
   }
 
   onKey(event: KeyboardEvent) {
@@ -43,7 +45,7 @@ export class TokensListComponent implements OnInit {
     const index = parseInt(event.key);
 
     if (!isNaN(index) && index < this.tokens.length + 1 && index > 0) {
-      this.router.navigateByUrl(`/tokens/${getTokenSlug(this.tokens[index - 1])}`);
+      this.router.navigateByUrl(`/tokens/${this.tokenService.getTokenSlug(this.tokens[index - 1])}`);
     }
   }
 }

@@ -36,20 +36,47 @@ export class CluedInService {
       console.groupEnd();
       return Promise.reject(error);
     }
-    const json = await response.json();
+    const text = await response.text();
     const t1 = performance.now();
     console.groupCollapsed(`✅ ${groupName}`);
     console.info('Request', input, init);
-    console.info('Response', json);
+    // here, we parse JSON but don's save,
+    // so if the object will be changed later,
+    // the console will represent the original response:
+    console.info('Response', JSON.parse(text));
     console.info('Elasped', Math.floor(t1 - t0), 'ms.')
     console.groupEnd();
-    return json;
+    return JSON.parse(text);
   }
 
   public getEntity(token: Token, id: string): Promise<EntityResponse> {
     return this.fetchJson(
       `Get Entity (id:${id})`,
       `${getApiUrl(token)}entity?id=${id}&full=true`,
+      {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token.accessToken}`
+        }
+      });
+  }
+
+  public getEntityRelationsSummary(token: Token, id: string): Promise<EntityRelationsSummaryResponse> {
+    return this.fetchJson(
+      `Get Entity Relations' Summary (id:${id})`,
+      `${getApiUrl(token)}entityedges?id=${id}`,
+      {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token.accessToken}`
+        }
+      });
+  }
+
+  public getEntityRelations(token: Token, id: string, edgeType: string): Promise<EntityResponse[]> {
+    return this.fetchJson(
+      `Get Entity Relations' (id:${id})`,
+      `${getApiUrl(token)}entity/relations?id=${id}&relationship=${edgeType}`,
       {
         method: 'GET',
         headers: {
@@ -100,6 +127,23 @@ export class CluedInService {
   }
 }
 
+export interface EntityRelationsSummaryResponse {
+  id: string | undefined;
+  type: string;
+  name: string | null;
+  displayName: string | null;
+  edges: {
+    edgeType: string;
+    direction: 'Incoming' | 'Outgoing';
+    entityType: string | null;
+    entityId: string | null;
+    name: string | null;
+    createdDate: string;
+    isGrouped: boolean;
+    entityCount: number;
+  }[]
+}
+
 export interface EntityResponse {
   entity: {
     'attribute-id': string;
@@ -107,18 +151,6 @@ export interface EntityResponse {
       entityType: string;
       name: string;
       codes: string[];
-      edgesSummary: {
-        incoming: {
-          'attribute-edgeType': string;
-          'attribute-count': string;
-          'attribute-entityType': string;
-        }[];
-        outgoing: {
-          'attribute-edgeType': string;
-          'attribute-count': string;
-          'attribute-entityType': string;
-        }[];
-      };
       properties: { [vocabularyKey: string]: string };
       'attribute-origin': string;
     }

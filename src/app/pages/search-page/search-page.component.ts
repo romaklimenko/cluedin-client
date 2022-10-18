@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CluedInService, SearchResponse } from 'src/app/services/cluedin.service';
-import { TokensService } from 'src/app/services/tokens.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-search-page',
@@ -23,7 +23,7 @@ export class SearchPageComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private tokenService: TokensService,
+    private tokenService: TokenService,
     private cluedInService: CluedInService) { }
 
   ngOnInit(): void {

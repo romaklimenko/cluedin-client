@@ -3,7 +3,7 @@ import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn,
 import { Router } from '@angular/router';
 import { parseJwt } from 'src/app/models/jtw';
 import { Token } from 'src/app/models/token';
-import { TokensService } from 'src/app/services/tokens.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-new-token-page',
@@ -20,9 +20,9 @@ export class NewTokenPageComponent implements OnInit {
   get token() { return this.newTokenForm.get('token'); }
   get name()  { return this.newTokenForm.get('name');  }
 
-  constructor(public router: Router, public tokensService: TokensService) {
-    //
-  }
+  constructor(
+    public router: Router,
+    public tokenService: TokenService) { }
 
   ngOnInit(): void {
   }
@@ -42,7 +42,10 @@ export class NewTokenPageComponent implements OnInit {
         };
       }
 
-      if (this.tokensService.getTokens().filter(x => x.accessToken === control.value).length > 0) {
+      if (this.tokenService
+          .getTokens()
+          .filter(x => x.accessToken === control.value)
+          .length > 0) {
         return {
           'error': 'Token already exists.'
         };
@@ -65,7 +68,7 @@ export class NewTokenPageComponent implements OnInit {
 
   submit() {
     if (this.newTokenForm.value.name && this.newTokenForm.value.token) {
-      this.tokensService.addToken(
+      this.tokenService.addToken(
         new Token(
           this.newTokenForm.value.name,
           this.newTokenForm.value.token));

@@ -1,0 +1,18 @@
+<ng-container *ngIf="token && entityRelationsSummaryResponse">
+  <div><a routerLink=".">{{ entityRelationsSummaryResponse.name }}</a><sup>{{ entityRelationsSummaryResponse.type }}</sup> relations:</div>
+  <ul>
+    <li *ngFor="let edge of entityRelationsSummaryResponse.edges">
+      <span>
+        {{ edge.direction.toLowerCase() === 'incoming' ? '&larr;' : '&rarr;' }}
+        {{ edge.edgeType }}
+        {{ edge.direction.toLowerCase() === 'incoming' ? 'from' : 'to' }}
+      </span>
+      <span *ngIf="edge.isGrouped">
+        {{ edge.entityCount }} more entities
+      </span>
+      <span *ngIf="!edge.isGrouped">
+        <a routerLink="/tokens/{{ tokenService.getTokenSlug(token) }}/entity/{{ edge.entityId }}">{{ edge.name }}</a> <sup>{{ edge.entityType }}</sup>
+      </span>
+    </li>
+  </ul>
+</ng-container>

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Token } from 'src/app/models/token';
 import { CluedInService, EntityResponse } from 'src/app/services/cluedin.service';
-import { TokensService } from 'src/app/services/tokens.service';
+import { TokenService } from 'src/app/services/token.service';
 
 type Tab = 'properties' | 'relations' | 'graph';
 
@@ -16,15 +16,16 @@ export class EntityPageComponent implements OnInit {
   public token: Token | null = null;
   public entity: EntityResponse | null = null;
   public properties: { vocabularyKey: string; value: string; }[] = [];
-  public currentTab: Tab = 'properties';
+  public currentTab: Tab = 'relations';
 
   constructor(
     private route: ActivatedRoute,
-    private tokenService: TokensService,
+    private tokenService: TokenService,
     private cluedInService: CluedInService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(async (params) => {
+      this.reset();
       const jti = params['slug-jti'].split('-').pop();
       const entityId = params['id'];
       for (let token of this.tokenService.getTokens()) { // TODO: tokenService.getTokens(x => x..JWT?.jti === jti)
@@ -44,6 +45,13 @@ export class EntityPageComponent implements OnInit {
         }
       }
     });
+  }
+
+  reset() {
+    this.token = null;
+    this.entity = null;
+    this.properties = [];
+    this.currentTab = 'relations';
   }
 
   selectTab(tab: Tab): void {
