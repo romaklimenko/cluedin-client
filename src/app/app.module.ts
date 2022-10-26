@@ -14,6 +14,7 @@ import { VocabulariesPageComponent } from './pages/vocabularies-page/vocabularie
 import { SearchPageComponent } from './pages/search-page/search-page.component';
 import { EntityPageComponent } from './pages/entity-page/entity-page.component';
 import { EntityRelationsComponent } from './components/entity-relations/entity-relations.component';
+import { EntityGraphComponent } from './components/entity-graph/entity-graph.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { EntityRelationsComponent } from './components/entity-relations/entity-r
     VocabulariesPageComponent,
     SearchPageComponent,
     EntityPageComponent,
-    EntityRelationsComponent
+    EntityRelationsComponent,
+    EntityGraphComponent
   ],
   imports: [
     BrowserModule,

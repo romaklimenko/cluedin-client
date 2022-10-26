@@ -16,12 +16,15 @@ export class EntityPageComponent implements OnInit {
   public token: Token | null = null;
   public entity: EntityResponse | null = null;
   public properties: { vocabularyKey: string; value: string; }[] = [];
-  public currentTab: Tab = 'relations';
+  public currentTab: Tab;
+  private readonly defaultTab: Tab = 'graph';
 
   constructor(
     private route: ActivatedRoute,
     private tokenService: TokenService,
-    private cluedInService: CluedInService) { }
+    private cluedInService: CluedInService) {
+      this.currentTab = this.defaultTab;
+    }
 
   ngOnInit(): void {
     this.route.params.subscribe(async (params) => {
@@ -51,7 +54,7 @@ export class EntityPageComponent implements OnInit {
     this.token = null;
     this.entity = null;
     this.properties = [];
-    this.currentTab = 'relations';
+    this.currentTab = this.defaultTab;
   }
 
   selectTab(tab: Tab): void {

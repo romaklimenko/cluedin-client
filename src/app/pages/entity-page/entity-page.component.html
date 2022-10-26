@@ -52,4 +52,7 @@
       <app-entity-relations [id]="entity.entity['attribute-id']" [token]="token"></app-entity-relations>
     </div>
   </div>
+  <div *ngIf="entity && token && currentTab === 'graph'" class="row">
+    <app-entity-graph [id]="entity.entity['attribute-id']" [token]="token"></app-entity-graph>
+  </div>
 </div>
