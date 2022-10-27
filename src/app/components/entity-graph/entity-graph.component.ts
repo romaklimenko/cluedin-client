@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import * as d3 from 'd3';
 import { Token } from 'src/app/models/token';
+import { CluedInService } from 'src/app/services/cluedin.service';
 import { getContext, appendFittedText } from 'src/app/tools/append-fitted-text-to-circle';
 import { computeLinkNumber, getLinkPath, Node, Relationship } from 'src/app/tools/directed-multigraph';
 
@@ -17,35 +18,84 @@ export class EntityGraphComponent implements OnInit, AfterViewInit {
   @ViewChild('svgElement') svgElement!: ElementRef;
   @ViewChild('widthStandard') widthStandard!: ElementRef;
 
-  constructor() { }
+  data: { nodes: Node[], relationships: Relationship[] } = ({
+    nodes: [
+      { id: '1', label: 'Movie' },
+      { id: '0', label: 'Person' },
+      { id: '2', label: 'Category' }
+    ],
+    relationships: [
+      { id: '3', label: 'REVIEWED', source: '0', target: '1' },
+      { id: '4', label: 'DIRECTED', source: '0', target: '1' },
+      { id: '5', label: 'PRODUCED', source: '0', target: '1' },
+      { id: '6', label: 'ACTED_IN', source: '0', target: '1' },
+      { id: '7', label: 'FOLLOWS', source: '0', target: '0' },
+      { id: '8', label: 'WROTE', source: '0', target: '1' },
+      { id: '9', label: 'IS_FRIEND_OF', source: '0', target: '0' },
+      { id: '10', label: 'LIKES', source: '0', target: '2' },
+      { id: '11', label: 'CONTAINS', source: '2', target: '1' },
+      { id: '12', label: 'INCLUDE', source: '1', target: '0' }
+    ]
+  });
+
+  nodes: Map<string, Node> = new Map<string, Node>();
+  relationships: Map<string, Relationship> = new Map<string, Relationship>();
+
+  constructor(
+    private cluedInService: CluedInService) { }
 
   ngOnInit(): void { }
 
-  ngAfterViewInit(): void {
+  async ngAfterViewInit() {
+    const entityRelationsSummary = await this.cluedInService.getEntityRelationsSummary(this.token!, this.id);
+    // { id: '1', label: 'Movie' },
+    // { id: '3', label: 'REVIEWED', source: '0', target: '1' },
+
+    this.nodes.clear();
+    this.relationships.clear();
+
+    const root: Node = {
+      id: entityRelationsSummary.id,
+      label: entityRelationsSummary.name || entityRelationsSummary.displayName || entityRelationsSummary.id
+    };
+
+    this.nodes.set(entityRelationsSummary.id, root);
+    
+    entityRelationsSummary.edges.forEach(d => {
+      const node: Node = {
+        id: d.isGrouped ? `${d.entityCount} entities from ${root.id}` : d.entityId!,
+        label: d.isGrouped ? `${d.entityCount} more entities` : d.name!
+      };
+      this.nodes.set(node.id, node);
+
+      const relationsip: Relationship = {
+        id: `${d.edgeType},${d.isGrouped ? d.edgeType : d.entityId}`,
+        label: d.edgeType,
+        source: d.direction === 'Incoming' ?
+          (d.isGrouped ? `${d.entityCount} entities from ${root.id}` : d.entityId!)
+          :
+          root.id,
+        target: d.direction === 'Outgoing' ?
+          (d.isGrouped ? `${d.entityCount} entities from ${root.id}` : d.entityId!)
+          :
+          root.id
+      };
+
+      this.relationships.set(relationsip.id, relationsip);
+    });
+
+    this.data = {
+      nodes: Array.from(this.nodes.values()),
+      relationships: Array.from(this.relationships.values())
+    };
+
+    // console.log('data', this.data);
+
     this.render();
   }
 
   async render() {
     // see: https://observablehq.com/@zechasault/directed-multigraph
-    const data: { nodes: Node[], relationships: Relationship[] } = ({
-      nodes: [
-        { id: '1', label: 'Movie' },
-        { id: '0', label: 'Person' },
-        { id: '2', label: 'Category' }
-      ],
-      relationships: [
-        { id: '3', label: 'REVIEWED', source: '0', target: '1' },
-        { id: '4', label: 'DIRECTED', source: '0', target: '1' },
-        { id: '5', label: 'PRODUCED', source: '0', target: '1' },
-        { id: '6', label: 'ACTED_IN', source: '0', target: '1' },
-        { id: '7', label: 'FOLLOWS', source: '0', target: '0' },
-        { id: '8', label: 'WROTE', source: '0', target: '1' },
-        { id: '9', label: 'IS_FRIEND_OF', source: '0', target: '0' },
-        { id: '10', label: 'LIKES', source: '0', target: '2' },
-        { id: '11', label: 'CONTAINS', source: '2', target: '1' },
-        { id: '12', label: 'INCLUDE', source: '1', target: '0' }
-      ]
-    });
 
     const element = this.svgElement.nativeElement;
     const width = this.widthStandard.nativeElement.clientWidth - 25;
@@ -59,8 +109,8 @@ export class EntityGraphComponent implements OnInit, AfterViewInit {
     const svg = d3.select(this.svgElement.nativeElement);
 
     // deep copy
-    let links = data.relationships.map(o => ({ ...o }));
-    let nodes = data.nodes.map(o => ({ ...o }));
+    let links = this.data.relationships.map(o => ({ ...o }));
+    let nodes = this.data.nodes.map(o => ({ ...o }));
 
     const maxLinkOcc = {};
 
@@ -163,9 +213,9 @@ export class EntityGraphComponent implements OnInit, AfterViewInit {
       .attr('stroke-width', 3)
       // @ts-ignore
       .attr('stroke', (_, i) =>
-        d3.rgb(d3.interpolateRainbow(i / data.nodes.length)).darker(1)
+        d3.rgb(d3.interpolateRainbow(i / this.data.nodes.length)).darker(1)
       )
-      .attr('fill', (_, i) => d3.interpolateRainbow(i / data.nodes.length));
+      .attr('fill', (_, i) => d3.interpolateRainbow(i / this.data.nodes.length));
 
     appendFittedText(context, node, (d: { label: string; }) => d.label, nodeRadius - 5);
     node

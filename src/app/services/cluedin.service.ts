@@ -128,7 +128,7 @@ export class CluedInService {
 }
 
 export interface EntityRelationsSummaryResponse {
-  id: string | undefined;
+  id: string;
   type: string;
   name: string | null;
   displayName: string | null;
