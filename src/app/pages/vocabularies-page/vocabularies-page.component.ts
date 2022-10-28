@@ -175,19 +175,17 @@ export class VocabulariesPageComponent implements OnInit, AfterViewInit {
       .append('text')
       .attr('dy', '0.31em')
       .attr('x', (d) => (d.children ? -6 : 6))
-      .attr('text-anchor', (d) => (d.children ? 'end' : 'start'))
+      .attr('text-anchor', (d) => (!d.children ? 'end' : 'start'))
       // @ts-ignore
       .text((d) => d.data.name)
       .clone(true)
       .lower()
       .attr('stroke', 'white');
 
-    svg.attr('transform', 'scale(-1, 1)');
     svg
       .selectAll('text')
-      .attr('transform', 'scale(-1, 1)')
       // @ts-ignore
-      .attr('text-anchor', (d) => (d.depth === 1 ? 'start' : 'end'))
+      .attr('text-anchor', (d) => (d.depth !== 1 ? 'start' : 'end'))
       .attr('x', function (d) {
         return d3.select(this).attr('text-anchor') === 'start' ? 6 : -6;
       });
