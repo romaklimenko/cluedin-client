@@ -17,7 +17,7 @@ export class EntityPageComponent implements OnInit {
   public entity: EntityResponse | null = null;
   public properties: { vocabularyKey: string; value: string; }[] = [];
   public currentTab: Tab;
-  private readonly defaultTab: Tab = 'graph';
+  private readonly defaultTab: Tab = 'properties';
 
   constructor(
     private route: ActivatedRoute,
@@ -54,11 +54,26 @@ export class EntityPageComponent implements OnInit {
     this.token = null;
     this.entity = null;
     this.properties = [];
-    this.currentTab = this.defaultTab;
+    switch (window.location.hash) {
+      case '#properties':
+        this.selectTab('properties');
+        break;
+      case '#relations':
+        this.selectTab('relations');
+        break;
+      case '#graph':
+        this.selectTab('graph');
+        break;
+    
+      default:
+        this.currentTab = this.defaultTab;
+        break;
+    }
   }
 
   selectTab(tab: Tab): void {
     this.currentTab = tab;
+    window.location.hash = `#${this.currentTab}`;
   }
 
 }

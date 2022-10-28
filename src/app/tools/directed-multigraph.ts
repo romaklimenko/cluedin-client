@@ -76,6 +76,7 @@ export function getLinkPath(source, target, linknum, inv, uniqueLink) {
 export interface Node {
   id: string;
   label: string;
+  entityType: string | null;
 }
 
 export interface Relationship {

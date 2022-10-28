@@ -4,8 +4,6 @@
     <h5><a href="{{token.organizationUrl}}entity/{{entity.entity['attribute-id']}}" target="_blank">
       {{entity.entity.processedData.name }}
     </a><sup>{{ entity.entity.processedData.entityType }}</sup></h5>
-    <div>Id: <span class="font-monospace">{{ entity.entity['attribute-id'] }}</span></div>
-    <div>Origin Code: <span class="font-monospace">{{ entity.entity.processedData['attribute-origin'] }}</span></div>
     <br>
     <div class="col-md-12">
       <ul class="nav nav-tabs">
@@ -26,6 +24,7 @@
   </div>
   <div *ngIf="entity && token && currentTab === 'properties'" class="row">
     <div class="col-md-12">
+      <div>Origin Code: <span class="font-monospace">{{ entity.entity.processedData['attribute-origin'] }}</span></div>
       <div>Codes:</div>
       <ul>
         <li *ngFor="let code of entity.entity.processedData.codes"><span class="font-monospace">{{code}}</span></li>

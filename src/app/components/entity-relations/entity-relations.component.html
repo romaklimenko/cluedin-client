@@ -11,7 +11,9 @@
         {{ edge.entityCount }} more entities
       </span>
       <span *ngIf="!edge.isGrouped">
-        <a routerLink="/tokens/{{ tokenService.getTokenSlug(token) }}/entity/{{ edge.entityId }}">{{ edge.name }}</a> <sup>{{ edge.entityType }}</sup>
+        <!-- TODO: why the commented line escapes # and how to avoid it? -->
+        <!-- <a routerLink="/tokens/{{ tokenService.getTokenSlug(token) }}/entity/{{ edge.entityId }}#relations">{{ edge.name }}</a> <sup>{{ edge.entityType }}</sup> -->
+        <a [href]="'/tokens/' + tokenService.getTokenSlug(token) + '/entity/' + edge.entityId + '#relations'">{{ edge.name }}</a> <sup>{{ edge.entityType }}</sup>
       </span>
     </li>
   </ul>

@@ -1,7 +1,8 @@
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import * as d3 from 'd3';
 import { Token } from 'src/app/models/token';
-import { CluedInService } from 'src/app/services/cluedin.service';
+import { CluedInService, EntityRelationsSummaryResponse } from 'src/app/services/cluedin.service';
 import { getContext, appendFittedText } from 'src/app/tools/append-fitted-text-to-circle';
 import { computeLinkNumber, getLinkPath, Node, Relationship } from 'src/app/tools/directed-multigraph';
 
@@ -19,30 +20,16 @@ export class EntityGraphComponent implements OnInit, AfterViewInit {
   @ViewChild('widthStandard') widthStandard!: ElementRef;
 
   data: { nodes: Node[], relationships: Relationship[] } = ({
-    nodes: [
-      { id: '1', label: 'Movie' },
-      { id: '0', label: 'Person' },
-      { id: '2', label: 'Category' }
-    ],
-    relationships: [
-      { id: '3', label: 'REVIEWED', source: '0', target: '1' },
-      { id: '4', label: 'DIRECTED', source: '0', target: '1' },
-      { id: '5', label: 'PRODUCED', source: '0', target: '1' },
-      { id: '6', label: 'ACTED_IN', source: '0', target: '1' },
-      { id: '7', label: 'FOLLOWS', source: '0', target: '0' },
-      { id: '8', label: 'WROTE', source: '0', target: '1' },
-      { id: '9', label: 'IS_FRIEND_OF', source: '0', target: '0' },
-      { id: '10', label: 'LIKES', source: '0', target: '2' },
-      { id: '11', label: 'CONTAINS', source: '2', target: '1' },
-      { id: '12', label: 'INCLUDE', source: '1', target: '0' }
-    ]
+    nodes: [],
+    relationships: []
   });
 
   nodes: Map<string, Node> = new Map<string, Node>();
   relationships: Map<string, Relationship> = new Map<string, Relationship>();
 
   constructor(
-    private cluedInService: CluedInService) { }
+    private cluedInService: CluedInService,
+    private router: Router) { }
 
   ngOnInit(): void { }
 
@@ -54,17 +41,27 @@ export class EntityGraphComponent implements OnInit, AfterViewInit {
     this.nodes.clear();
     this.relationships.clear();
 
+    this.addData(entityRelationsSummary);
+
+    // console.log('data', this.data);
+
+    this.render();
+  }
+
+  addData(entityRelationsSummary: EntityRelationsSummaryResponse): void {
     const root: Node = {
       id: entityRelationsSummary.id,
-      label: entityRelationsSummary.name || entityRelationsSummary.displayName || entityRelationsSummary.id
+      label: entityRelationsSummary.name || entityRelationsSummary.displayName || entityRelationsSummary.id,
+      entityType: entityRelationsSummary.type
     };
 
     this.nodes.set(entityRelationsSummary.id, root);
-    
+
     entityRelationsSummary.edges.forEach(d => {
       const node: Node = {
-        id: d.isGrouped ? `${d.entityCount} entities from ${root.id}` : d.entityId!,
-        label: d.isGrouped ? `${d.entityCount} more entities` : d.name!
+        id: d.isGrouped ? `${root.id}-${d.entityCount}` : d.entityId!,
+        label: d.isGrouped ? `${d.entityCount} more entities` : d.name!,
+        entityType: d.entityType
       };
       this.nodes.set(node.id, node);
 
@@ -72,11 +69,11 @@ export class EntityGraphComponent implements OnInit, AfterViewInit {
         id: `${d.edgeType},${d.isGrouped ? d.edgeType : d.entityId}`,
         label: d.edgeType,
         source: d.direction === 'Incoming' ?
-          (d.isGrouped ? `${d.entityCount} entities from ${root.id}` : d.entityId!)
+          (d.isGrouped ? `${root.id}-${d.entityCount}` : d.entityId!)
           :
           root.id,
         target: d.direction === 'Outgoing' ?
-          (d.isGrouped ? `${d.entityCount} entities from ${root.id}` : d.entityId!)
+          (d.isGrouped ? `${root.id}-${d.entityCount}` : d.entityId!)
           :
           root.id
       };
@@ -88,10 +85,6 @@ export class EntityGraphComponent implements OnInit, AfterViewInit {
       nodes: Array.from(this.nodes.values()),
       relationships: Array.from(this.relationships.values())
     };
-
-    // console.log('data', this.data);
-
-    this.render();
   }
 
   async render() {
@@ -181,6 +174,12 @@ export class EntityGraphComponent implements OnInit, AfterViewInit {
       .enter()
       .append('g')
       .attr('cursor', 'move')
+      .on('click', async (event: PointerEvent, d: Node) => {
+        if (d.entityType) {
+          // TODO: is it nasty?
+          this.router.navigateByUrl(`${window.location.pathname.split('/').slice(0, -1).join('/')}/${d.id}#graph`);
+        }
+      })
       .call(
         // @ts-ignore
         d3
@@ -212,12 +211,16 @@ export class EntityGraphComponent implements OnInit, AfterViewInit {
       .attr('r', nodeRadius)
       .attr('stroke-width', 3)
       // @ts-ignore
-      .attr('stroke', (_, i) =>
-        d3.rgb(d3.interpolateRainbow(i / this.data.nodes.length)).darker(1)
+      .attr('stroke', (d, i) => {
+        return d.entityType ? d3.rgb(d3.interpolateRainbow(i / this.data.nodes.length)).darker(1) : d3.rgb('gray').darker(1);
+      }
       )
-      .attr('fill', (_, i) => d3.interpolateRainbow(i / this.data.nodes.length));
+      .attr('fill', (d, i) => {
+        return d.entityType ? d3.interpolateRainbow(i / this.data.nodes.length) : 'gray';
+      });
 
     appendFittedText(context, node, (d: { label: string; }) => d.label, nodeRadius - 5);
+
     node
       .selectAll('.fitted-text')
       .attr('fill', 'white')
