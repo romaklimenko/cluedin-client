@@ -1,3 +1,4 @@
+import { PlatformLocation } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import * as d3 from 'd3';
@@ -31,7 +32,8 @@ export class EntityGraphComponent implements OnInit, AfterViewInit {
 
   constructor(
     private cluedInService: CluedInService,
-    private router: Router) { }
+    private router: Router,
+    private platformLocation: PlatformLocation) { }
 
   ngOnInit(): void { }
 
@@ -193,7 +195,12 @@ export class EntityGraphComponent implements OnInit, AfterViewInit {
       .on('click', async (event: PointerEvent, d: Node) => {
         if (d.entityType) {
           // TODO: is it nasty?
-          this.router.navigateByUrl(`${window.location.pathname.split('/').slice(0, -1).join('/')}/${d.id}#graph`);
+          const url = window.location.pathname
+            .replace(this.platformLocation.getBaseHrefFromDOM(), '')
+            .split('/')
+            .slice(0, -1)
+            .join('/');
+          this.router.navigateByUrl(`${url}/${d.id}#graph`);
         }
       })
       .call(
