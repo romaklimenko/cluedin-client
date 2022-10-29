@@ -1,5 +1,12 @@
 <ng-container>
   <div class="col-md-12">
+    <p>
+      <ng-container *ngFor="let entityType of entityTypesArray; let last = last">
+        <svg style="position:relative;top:1px;" width=14 height=14 viewBox="-10 -10 20 20">
+          <circle r=9 [attr.fill]="entityType[1]"></circle>
+        </svg> - {{ entityType[0] }}<span *ngIf="!last">, </span>
+      </ng-container>
+    </p>
     <svg class="chart" #svgElement></svg>
   </div>
   <div #widthStandard class="col-md-12"></div>

@@ -3,9 +3,8 @@
   <ul>
     <li *ngFor="let edge of entityRelationsSummaryResponse.edges">
       <span>
-        {{ edge.direction.toLowerCase() === 'incoming' ? '&larr;' : '&rarr;' }}
         {{ edge.edgeType }}
-        {{ edge.direction.toLowerCase() === 'incoming' ? 'from' : 'to' }}
+        {{ edge.direction.toLowerCase() === 'incoming' ? '&larr;' : '&rarr;' }}
       </span>
       <span *ngIf="edge.isGrouped">
         {{ edge.entityCount }} more entities

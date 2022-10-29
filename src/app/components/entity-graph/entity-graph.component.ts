@@ -5,6 +5,7 @@ import { Token } from 'src/app/models/token';
 import { CluedInService, EntityRelationsSummaryResponse } from 'src/app/services/cluedin.service';
 import { getContext, appendFittedText } from 'src/app/tools/append-fitted-text-to-circle';
 import { computeLinkNumber, getLinkPath, Node, Relationship } from 'src/app/tools/directed-multigraph';
+import { google10c } from 'src/app/tools/google10c';
 
 @Component({
   selector: 'app-entity-graph',
@@ -26,6 +27,7 @@ export class EntityGraphComponent implements OnInit, AfterViewInit {
 
   nodes: Map<string, Node> = new Map<string, Node>();
   relationships: Map<string, Relationship> = new Map<string, Relationship>();
+  entityTypes: Map<string, string> = new Map<string, string>();
 
   constructor(
     private cluedInService: CluedInService,
@@ -48,12 +50,20 @@ export class EntityGraphComponent implements OnInit, AfterViewInit {
     this.render();
   }
 
+  public get entityTypesArray() {
+    return Array.from(this.entityTypes);
+  }
+
   addData(entityRelationsSummary: EntityRelationsSummaryResponse): void {
+    const entityTypes = new Set<string>();
+
     const root: Node = {
       id: entityRelationsSummary.id,
       label: entityRelationsSummary.name || entityRelationsSummary.displayName || entityRelationsSummary.id,
       entityType: entityRelationsSummary.type
     };
+
+    entityTypes.add(entityRelationsSummary.type);
 
     this.nodes.set(entityRelationsSummary.id, root);
 
@@ -64,6 +74,9 @@ export class EntityGraphComponent implements OnInit, AfterViewInit {
         entityType: d.entityType
       };
       this.nodes.set(node.id, node);
+      if (node.entityType) {
+        entityTypes.add(node.entityType);
+      }
 
       const relationsip: Relationship = {
         id: `${d.edgeType},${d.isGrouped ? d.edgeType : d.entityId}`,
@@ -81,6 +94,10 @@ export class EntityGraphComponent implements OnInit, AfterViewInit {
       this.relationships.set(relationsip.id, relationsip);
     });
 
+    for (const [i, entityType] of Array.from(entityTypes).sort().entries()) {
+      this.entityTypes.set(entityType, google10c(i));
+    }
+
     this.data = {
       nodes: Array.from(this.nodes.values()),
       relationships: Array.from(this.relationships.values())
@@ -92,9 +109,9 @@ export class EntityGraphComponent implements OnInit, AfterViewInit {
 
     const element = this.svgElement.nativeElement;
     const width = this.widthStandard.nativeElement.clientWidth - 25;
-    const height = window.innerHeight - 250;
-    const linkDistance = 150;
-    const nodeRadius = 30;
+    const height = window.innerHeight - 160;
+    const linkDistance = 125;
+    const nodeRadius = 45;
     const context = getContext();
 
     element.setAttribute('viewBox', `0,0,${width},${height}`);
@@ -149,7 +166,7 @@ export class EntityGraphComponent implements OnInit, AfterViewInit {
       .append('path')
       .attr('class', 'links')
       .attr('stroke', '#aaa')
-      .attr('stroke-width', '3px')
+      .attr('stroke-width', '2px')
       .attr('id', d => d.id)
       .attr('style', 'fill: none;');
 
@@ -162,10 +179,9 @@ export class EntityGraphComponent implements OnInit, AfterViewInit {
       .attr('style', 'text-anchor: middle')
       .append('tspan')
       .attr('stroke', 'black')
-      .attr('font-weight', 'bold')
-      .attr('style', 'font: 10px sans-serif')
+      .attr('style', 'font-size: 12px')
       .text(d => `${d.label} ►`)
-      .attr('dy', 3);
+      .attr('dy', -6);
 
     const node = g
       .append('g')
@@ -212,11 +228,11 @@ export class EntityGraphComponent implements OnInit, AfterViewInit {
       .attr('stroke-width', 3)
       // @ts-ignore
       .attr('stroke', (d, i) => {
-        return d.entityType ? d3.rgb(d3.interpolateRainbow(i / this.data.nodes.length)).darker(1) : d3.rgb('gray').darker(1);
+        return d.entityType ? d3.rgb(this.entityTypes.get(d.entityType)!).darker(1) : d3.rgb('gray').darker(1);
       }
       )
       .attr('fill', (d, i) => {
-        return d.entityType ? d3.interpolateRainbow(i / this.data.nodes.length) : 'gray';
+        return d.entityType ? this.entityTypes.get(d.entityType)! : 'gray';
       });
 
     appendFittedText(context, node, (d: { label: string; }) => d.label, nodeRadius - 5);
