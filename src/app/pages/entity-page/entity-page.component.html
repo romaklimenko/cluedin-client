@@ -24,10 +24,11 @@
   <div *ngIf="entity && token && currentTab === 'properties'" class="row">
     <div class="col-md-12">
       <div>Origin Code: <span class="font-monospace">{{ entity.entity.processedData['attribute-origin'] }}</span></div>
-      <div>Codes:</div>
+      <!-- TODO: return this back -->
+      <!-- <div>Codes:</div>
       <ul>
         <li *ngFor="let code of entity.entity.processedData.codes"><span class="font-monospace">{{code}}</span></li>
-      </ul>
+      </ul> -->
       <div>Properties:</div>
       <table class="table table-hover table-bordered">
         <thead>
