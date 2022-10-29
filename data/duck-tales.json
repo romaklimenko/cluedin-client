@@ -1,0 +1,57 @@
+[
+  {
+    "name": "Huey Duck",
+    "father": "?",
+    "mother": "Della Duck"
+  },
+  {
+    "name": "Dewey Duck",
+    "father": "?",
+    "mother": "Della Duck"
+  },
+  {
+    "name": "Louie Duck",
+    "father": "?",
+    "mother": "Della Duck"
+  },
+  {
+    "name": "Della Duck",
+    "father": "Quackmore Duck",
+    "mother": "Hortense McDuck"
+  },
+  {
+    "name": "Donald Duck",
+    "father": "Quackmore Duck",
+    "mother": "Hortense McDuck"
+  },
+  {
+    "name": "Scrooge McDuck",
+    "father": "Fergus McDuck",
+    "mother": "Downy O'Drake"
+  },
+  {
+    "name": "Matilda McDuck",
+    "father": "Fergus McDuck",
+    "mother": "Downy O'Drake"
+  },
+  {
+    "name": "Hortense McDuck",
+    "father": "Fergus McDuck",
+    "mother": "Downy O'Drake"
+  },
+  {
+    "name": "Fergus McDuck",
+    "father": "Dingus McDuck",
+    "mother": "Molly Mallard"
+  },
+  {
+    "name": "Jake McDuck",
+    "father": "Dingus McDuck",
+    "mother": "Molly Mallard"
+  },
+  {
+    "name": "Angus McDuck",
+    "father": "Dingus McDuck",
+    "mother": "Molly Mallard"
+  }
+]
