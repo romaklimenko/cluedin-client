@@ -1,3 +1,4 @@
+import { PlatformLocation } from '@angular/common';
 import { Component } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 
@@ -9,7 +10,9 @@ import { NavigationEnd, Router } from '@angular/router';
 export class AppComponent {
   title = 'cluedin';
 
-  constructor(public router: Router) {
+  constructor(
+    public router: Router,
+    private platformLocation: PlatformLocation) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         window.scroll(0, 0);
@@ -32,9 +35,11 @@ export class AppComponent {
 
     switch (event.code) {
       case 'KeyH': // Home
-        const pathnameParts = window.location.pathname.split('/');
-        if (pathnameParts.length > 3 && pathnameParts[1] === 'tokens') {
-          this.router.navigateByUrl(`/tokens/${pathnameParts[2]}`);
+        const pathnameParts = window.location.pathname
+          .replace(this.platformLocation.getBaseHrefFromDOM(), '')
+          .split('/');
+        if (pathnameParts.length > 2 && pathnameParts[0] === 'tokens') {
+          this.router.navigateByUrl(`/tokens/${pathnameParts[1]}`);
         } else {
           this.router.navigateByUrl('/');
         }
