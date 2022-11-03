@@ -1,9 +1,12 @@
 <ng-container>
   <app-header></app-header>
-  <div class="row" *ngIf="token">
+  <div class="row" *ngIf="!ready">
+    <app-progress></app-progress>
+  </div>
+  <div class="row" [hidden]="!token || !ready">
     <div class="col-md-12">
       <h4>
-        {{ token.name }}
+        {{ token!.name }}
         <small>
           <a href="{{ organizationUrl }}" target="_blank">{{ organizationUrl }}</a>
         </small>

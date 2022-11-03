@@ -15,6 +15,7 @@ import { SearchPageComponent } from './pages/search-page/search-page.component';
 import { EntityPageComponent } from './pages/entity-page/entity-page.component';
 import { EntityRelationsComponent } from './components/entity-relations/entity-relations.component';
 import { EntityGraphComponent } from './components/entity-graph/entity-graph.component';
+import { ProgressComponent } from './components/progress/progress.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { EntityGraphComponent } from './components/entity-graph/entity-graph.com
     SearchPageComponent,
     EntityPageComponent,
     EntityRelationsComponent,
-    EntityGraphComponent
+    EntityGraphComponent,
+    ProgressComponent
   ],
   imports: [
     BrowserModule,

@@ -16,6 +16,7 @@ export class VocabulariesPageComponent implements OnInit, AfterViewInit {
   public token: Token | null = null;
   public tokenSlug: string | null = null;
   public organizationUrl: string = '';
+  public ready: boolean = false;
 
   @ViewChild('svgElement') svgElement!: ElementRef;
   @ViewChild('widthStandard') widthStandard!: ElementRef;
@@ -189,5 +190,7 @@ export class VocabulariesPageComponent implements OnInit, AfterViewInit {
       .attr('x', function (d) {
         return d3.select(this).attr('text-anchor') === 'start' ? 6 : -6;
       });
+
+    this.ready = true;
   }
 }
