@@ -47,6 +47,14 @@ export class EntityGraphComponent implements OnInit, AfterViewInit {
 
     this.addData(entityRelationsSummary);
 
+    for await (let edge of entityRelationsSummary.edges) {
+      if (!edge.entityId || edge.entityType?.startsWith('/Temporal')) {
+        continue;
+      }
+
+      this.addData(await this.cluedInService.getEntityRelationsSummary(this.token!, edge.entityId!));
+    }
+
     // console.log('data', this.data);
 
     this.render();
